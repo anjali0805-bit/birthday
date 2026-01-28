@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise 🎉</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+body {
+  height: 100vh;
+  background: radial-gradient(circle, #ffb3de, #ff4f9a);
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+
+.slide.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: white;
+  color: #ff2f92;
+  font-weight: bold;
+  box-shadow: 0 0 15px pink;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  font-size: 22px;
+  animation: float 4s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* BIG Flower clicks */
+.flower {
+  position: absolute;
+  font-size: 60px; /* 🌸 MADE BIGGER */
+  animation: pop 0.6s ease-out forwards;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 1; }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: confettiFall 4s linear infinite;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Birthday Card */
+.card {
+  background: white;
+  color: #ff2f92;
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 0 30px pink;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px pink; }
+  to { box-shadow: 0 0 50px hotpink; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Slide 1 -->
+<div class="slide active">
+  <h1>Hiiiii 💕</h1>
+  <p>This is a little birthday surprise just for you 🎁</p>
+  <button onclick="nextSlide()">Next ➡️</button>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide">
+  <h1>Guess what?? 👀</h1>
+  <p>Someone very special is getting older today 😌🎂</p>
+  <button onclick="nextSlide()">Next ➡️</button>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="clickSlide">
+  <h1>Click anywhere 🌸</h1>
+  <p>Big flowers will bloom everywhere 💖</p>
+  <p id="clickText">Clicks: 0 / 15</p>
+  <button id="hiddenNext" onclick="nextSlide()" style="display:none;">Next ➡️</button>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide">
+  <div class="card">
+    <h1>🎉 HAPPY BIRTHDAY 🎉</h1>
+    <p>You are loved more than you know 💖</p>
+    <p>May your day be filled with smiles, cake 🍰 & happiness ✨</p>
+    <p>Stay cute, stay amazing 🌈</p>
+  </div>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+let clicks = 0;
+
+function nextSlide() {
+  slides[current].classList.remove("active");
+  current++;
+  slides[current].classList.add("active");
+}
+
+/* Floating hearts */
+function createHeart() {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.top = "100vh";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+setInterval(createHeart, 400);
+
+/* Confetti */
+function createConfetti() {
+  let conf = document.createElement("div");
+  conf.className = "confetti";
+  conf.style.left = Math.random() * 100 + "vw";
+  conf.style.background = ["#ff69b4","#ffd1dc","#fff"][Math.floor(Math.random()*3)];
+  conf.style.animationDuration = (3 + Math.random()*2) + "s";
+  document.body.appendChild(conf);
+  setTimeout(() => conf.remove(), 5000);
+}
+setInterval(createConfetti, 150);
+
+/* Flower clicks */
+document.getElementById("clickSlide").addEventListener("click", function(e) {
+  let flower = document.createElement("div");
+  flower.className = "flower";
+  flower.innerHTML = "🌸";
+  flower.style.left = (e.clientX - 30) + "px";
+  flower.style.top = (e.clientY - 30) + "px";
+  document.body.appendChild(flower);
+  setTimeout(() => flower.remove(), 900);
+
+  clicks++;
+  document.getElementById("clickText").innerText = `Clicks: ${clicks} / 15`;
+
+  if (clicks >= 15) {
+    document.getElementById("hiddenNext").style.display = "inline-block";
+  }
+});
+</script>
+
+</body>
+</html>
